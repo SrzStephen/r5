@@ -44,9 +44,6 @@ public class GeometryUtils {
         return 2 * RADIUS_OF_EARTH_M * FastMath.asin(FastMath.sqrt(underRadical));
     }
 
-    public interface Config {
-        int maxBoundingBoxAreaSqKm ();
-    }
     /**
      * Project the point (fixedLon, fixedLat) onto the line segment from (fixedLon0, fixedLat0) to
      * (fixedLon1, fixedLat1) and return the fractional distance of the projected location along the segment as a
