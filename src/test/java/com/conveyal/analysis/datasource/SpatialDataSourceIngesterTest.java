@@ -59,13 +59,6 @@ class SpatialDataSourceIngesterTest {
         }
     }
 
-    /** Test on files containing huge shapes: the continents of Africa, South America, and Australia. */
-    @ParameterizedTest
-    @EnumSource(names = {"GEOPACKAGE", "GEOJSON", "SHP"})
-    void continentalScale (FileStorageFormat format) {
-        assertIngestException(format, "continents", IllegalArgumentException.class, "exceeds");
-    }
-
     /**
      * Test on projected (non-WGS84) data containing shapes on both sides of the 180 degree antimeridian.
      * This case was encountered in the wild: the North Island and the Chatham islands, both part of New Zealand.

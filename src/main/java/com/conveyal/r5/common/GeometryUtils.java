@@ -13,6 +13,7 @@ import static com.conveyal.r5.streets.VertexStore.fixedDegreesToFloating;
 import static com.conveyal.r5.streets.VertexStore.floatingDegreesToFixed;
 import static com.google.common.base.Preconditions.checkArgument;
 
+
 /**
  * Reimplementation of OTP GeometryUtils, using copied code where there are not licensing concerns.
  * Also contains reusable methods for validating WGS84 envelopes and latitude and longitude values.
@@ -22,9 +23,6 @@ public class GeometryUtils {
 
     /** Average of polar and equatorial radii, https://en.wikipedia.org/wiki/Earth */
     public static final double RADIUS_OF_EARTH_M = 6_367_450;
-
-    /** Maximum area allowed for the bounding box of uploaded files -- large enough for California.  */
-    private static final double MAX_BOUNDING_BOX_AREA_SQ_KM = 975_000;
 
     /**
      * Haversine formula for distance on the sphere. We used to have a fastDistance function that would estimate this
@@ -156,20 +154,13 @@ public class GeometryUtils {
     }
 
     /**
-     * Throw an exception if the provided envelope is too big for a reasonable destination grid.
-     * Should also catch cases where data sets include points on both sides of the 180 degree meridian.
+     * Should catch cases where data sets include points on both sides of the 180 degree meridian.
      * This static utility method can be reused to test other automatically determined bounds such as those
      * from OSM or GTFS uploads.
      */
     public static void checkWgsEnvelopeSize (Envelope envelope, String thingBeingChecked) {
         checkWgsEnvelopeRange(envelope);
         checkWgsEnvelopeAntimeridian(envelope, thingBeingChecked);
-        if (roughWgsEnvelopeArea(envelope) > MAX_BOUNDING_BOX_AREA_SQ_KM) {
-            throw new IllegalArgumentException(String.format(
-                    "Geographic extent of %s (%.0f km2) exceeds limit of %.0f km2.",
-                    thingBeingChecked, roughWgsEnvelopeArea(envelope), MAX_BOUNDING_BOX_AREA_SQ_KM
-            ));
-        }
     }
 
 }
